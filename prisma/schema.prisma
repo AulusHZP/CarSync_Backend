@@ -60,8 +60,24 @@ model User {
   name         String
   email        String   @unique
   passwordHash String
+  vehicles     Vehicle[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  @@index([createdAt])
+}
+
+model Vehicle {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  model     String
+  year      String
+  plate     String   @unique
+  totalKm   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
   @@index([createdAt])
 }
