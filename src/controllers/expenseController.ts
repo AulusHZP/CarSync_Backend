@@ -30,6 +30,9 @@ export class ExpenseController {
         userEmail,
         validatedData.category as ExpenseCategory,
         validatedData.amount,
+        validatedData.fuelType,
+        validatedData.liters,
+        validatedData.pricePerLiter,
       );
 
       // Return response
@@ -140,6 +143,9 @@ export class ExpenseController {
       const updateData = {
         ...(validatedData.category && { category: validatedData.category as ExpenseCategory }),
         ...(validatedData.amount !== undefined && { amount: validatedData.amount }),
+        ...(validatedData.fuelType !== undefined && { fuelType: validatedData.fuelType }),
+        ...(validatedData.liters !== undefined && { liters: validatedData.liters }),
+        ...(validatedData.pricePerLiter !== undefined && { pricePerLiter: validatedData.pricePerLiter }),
       };
 
       // Call service

@@ -5,11 +5,17 @@ interface CreateExpenseData {
   userEmail: string;
   category: ExpenseCategory;
   amount: string | number;
+  fuelType?: string;
+  liters?: string | number;
+  pricePerLiter?: string | number;
 }
 
 interface UpdateExpenseData {
   category?: ExpenseCategory;
   amount?: string | number;
+  fuelType?: string;
+  liters?: string | number;
+  pricePerLiter?: string | number;
 }
 
 interface FindAllOptions {
@@ -29,6 +35,9 @@ export class ExpenseRepository {
         userEmail: data.userEmail,
         category: data.category,
         amount: this.normalizeAmount(data.amount),
+        ...(data.fuelType && { fuelType: data.fuelType }),
+        ...(data.liters !== undefined && { liters: this.normalizeAmount(data.liters) }),
+        ...(data.pricePerLiter !== undefined && { pricePerLiter: this.normalizeAmount(data.pricePerLiter) }),
       },
     });
   }
@@ -94,6 +103,9 @@ export class ExpenseRepository {
       data: {
         ...(data.category && { category: data.category }),
         ...(data.amount !== undefined && { amount: this.normalizeAmount(data.amount) }),
+        ...(data.fuelType !== undefined && { fuelType: data.fuelType }),
+        ...(data.liters !== undefined && { liters: this.normalizeAmount(data.liters) }),
+        ...(data.pricePerLiter !== undefined && { pricePerLiter: this.normalizeAmount(data.pricePerLiter) }),
       },
     });
   }

@@ -4,11 +4,17 @@ import { ExpenseCategory, ServiceStatus } from '@prisma/client';
 export interface CreateExpenseRequest {
   category: ExpenseCategory;
   amount: number;
+  fuelType?: string;
+  liters?: number;
+  pricePerLiter?: number;
 }
 
 export interface UpdateExpenseRequest {
   category?: ExpenseCategory;
   amount?: number;
+  fuelType?: string;
+  liters?: number;
+  pricePerLiter?: number;
 }
 
 export interface CreateServiceRequest {
@@ -38,6 +44,9 @@ export interface ExpenseResponse {
   category: string;
   amount: number;
   categoryLabel: string;
+  fuelType?: string;
+  liters?: number;
+  pricePerLiter?: number;
   createdAt: string;
   updatedAt: string;
 }

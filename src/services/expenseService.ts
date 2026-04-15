@@ -10,11 +10,17 @@ export class ExpenseService {
     userEmail: string,
     category: ExpenseCategory,
     amount: number,
+    fuelType?: string,
+    liters?: number,
+    pricePerLiter?: number,
   ): Promise<ExpenseResponse> {
     const expense = await expenseRepository.create({
       userEmail,
       category,
       amount,
+      fuelType,
+      liters,
+      pricePerLiter,
     });
 
     return this.mapToResponse(expense);
@@ -65,6 +71,9 @@ export class ExpenseService {
     updates: {
       category?: ExpenseCategory;
       amount?: number;
+      fuelType?: string;
+      liters?: number;
+      pricePerLiter?: number;
     },
   ): Promise<ExpenseResponse | null> {
     try {
@@ -105,7 +114,7 @@ export class ExpenseService {
    * Map Expense model to Response DTO
    */
   private mapToResponse(expense: Expense): ExpenseResponse {
-    return {
+    const response: ExpenseResponse = {
       id: expense.id,
       category: expense.category,
       categoryLabel: CATEGORY_LABELS[expense.category],
@@ -113,6 +122,18 @@ export class ExpenseService {
       createdAt: expense.createdAt.toISOString(),
       updatedAt: expense.updatedAt.toISOString(),
     };
+
+    if (expense.fuelType) {
+      response.fuelType = expense.fuelType;
+    }
+    if (expense.liters) {
+      response.liters = Number(expense.liters);
+    }
+    if (expense.pricePerLiter) {
+      response.pricePerLiter = Number(expense.pricePerLiter);
+    }
+
+    return response;
   }
 }
 
