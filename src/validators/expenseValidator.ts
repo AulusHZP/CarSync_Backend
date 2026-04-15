@@ -31,14 +31,7 @@ export const createExpenseSchema = z.object({
     .positive('Price per liter must be greater than 0')
     .max(999.99, 'Price per liter must be less than 999.99')
     .optional(),
-}).refine(
-  (data) => {
-    // If category is FUEL, at least one fuel field should be provided (optional but recommended)
-    // This is a soft validation to allow flexibility
-    return true;
-  },
-  { message: 'Invalid fuel data' }
-);
+});
 
 // Update Expense validation schema
 export const updateExpenseSchema = createExpenseSchema.partial();
