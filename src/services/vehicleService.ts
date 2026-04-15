@@ -32,9 +32,15 @@ export class VehicleService {
     const normalizedEmail = userEmail.trim().toLowerCase();
     const normalizedPlate = plate.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-    const user = await authRepository.findByEmail(normalizedEmail);
+    let user = await authRepository.findByEmail(normalizedEmail);
     if (!user) {
-      throw new VehicleServiceError('User not found', 404);
+      // Auto-create user if not found (handles session edge cases)
+      user = await authRepository.createUser({
+        name: normalizedEmail.split('@')[0],
+        email: normalizedEmail,
+        passwordHash: '', // Empty hash for auto-created users
+      });
+      console.log(`Auto-created user for email: ${normalizedEmail}`);
     }
 
     const existing = await vehicleRepository.findByPlate(normalizedPlate);
